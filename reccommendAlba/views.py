@@ -2,11 +2,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from .models import Profile
+from .models import Profile, OHaeng
+from .MBTIdescription import types
 from django.views.decorators.csrf import csrf_protect
-
-
-# Create your views here.
 
 def test(request):
     return render(request, 'reccommendAlba/test.html')
@@ -29,7 +27,15 @@ def index(request):
             return render(request, 'reccommendAlba/test_EI.html', {'username': profile.username})
         else:
             profile = profiles[0]
-            return render(request, 'reccommendAlba/success.html', {'profile': profile})
+            usertype = profile.type_EI + profile.type_SN + profile.type_TF + profile.type_JP
+            ohaengs = OHaeng.objects.filter(birth_date=profile.birth_date)
+            if len(ohaengs) == 0:
+                ohaeng = OHaeng.objects.get(birth_date="19181115")
+            else:
+                ohaeng = ohaengs[0]
+            MBTI_description = types[usertype].__str__()
+            return render(request, 'reccommendAlba/result.html',
+                          {'profile': profile, 'description': MBTI_description, 'ohaeng': ohaeng})
     elif request.method == "GET":
         return render(request, 'reccommendAlba/index.html')
 
@@ -130,4 +136,57 @@ def test_JP(request, username):
     profile.num_P = num_P
     profile.num_J = num_J
     profile.save()
-    return render(request, 'reccommendAlba/success.html', {'profile': profile})
+
+    usertype = profile.type_EI + profile.type_SN + profile.type_TF + profile.type_JP
+    ohaengs = OHaeng.objects.filter(birth_date=profile.birth_date)
+    if len(ohaengs) == 0:
+        ohaeng = OHaeng.objects.get(birth_date="19181115")
+    else:
+        ohaeng = ohaengs[0]
+    MBTI_description = types[usertype].__str__()
+
+    """
+    BELOW
+    
+
+    model2 = torch.load('saved_model')
+
+    input_ = [ohaeng.tree, ohaeng.fire, ohaeng.soil, ohaeng.metal, ohaeng.water, profile.num_E, profile.num_I,
+              profile.num_S,
+              profile.num_N, profile.num_T, profile.num_F, profile.num_J, profile.num_P]
+    input_ = np.array(input_, dtype=np.float32)
+    input_ = Variable(torch.from_numpy(input_))
+
+    output = model2(input_)
+    output = output.view(-1)
+    list = [i[0] for i in sorted(enumerate(output), key=lambda x: x[1], reverse=True)]
+    pos_list = sorted(output, reverse=True)
+    sum_ = sum(pos_list)
+
+    # 레이블 vocab 만들기
+    file = open('./vocabulary.txt', 'r', encoding='euc-kr')
+    labels = []
+    while True:
+        line = file.readline()
+        line = line[:-1]
+        if not line: break
+        labels.append(line)
+    vocab = set()
+    vocab_label = np.array(labels)
+    vocab.update()
+    label_vocab = {word: i for i, word in enumerate(vocab)}
+
+    # 내림차순한 직업 순서
+    job_list_ = []
+    for num in list:
+        a = [name for name, age in label_vocab.items() if age == num]
+        job_list_.append(a[0])
+
+    # 정규화한 확률
+    pos_list_ = []
+    for num in pos_list:
+        pos_list_.append(num / sum_)
+        """
+
+    return render(request, 'reccommendAlba/result.html',
+                  {'profile': profile, 'description': MBTI_description, 'ohaeng': ohaeng})

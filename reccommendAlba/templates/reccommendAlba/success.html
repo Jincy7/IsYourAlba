@@ -7,6 +7,8 @@
 <body>
     <h1>Success</h1>
     <li>{{ profile.username }}님의 MBTI의 유형은 : {{ profile.type_EI }}{{ profile.type_SN }}{{ profile.type_TF }}{{ profile.type_JP }}입니다.</li>
+    <li>음양 오행설에 따른 {{ profile.username }}님은 목: {{ ohaeng.tree }} 화 : {{ ohaeng.fire }} 토 : {{ ohaeng.soil }} 금 : {{ ohaeng.metal }} 수 : {{ ohaeng.water }} 의 성향을 가지고 있습니다.</li>
+    <li>{{ profile.type_EI }}{{ profile.type_SN }}{{ profile.type_TF }}{{ profile.type_JP }} 형의 성격은 "{{ description}}" 입니다.</li>
 
 </body>
 </html>

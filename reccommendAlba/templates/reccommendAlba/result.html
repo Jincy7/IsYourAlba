@@ -1,0 +1,50 @@
+{% extends 'reccommendAlba/base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="card">
+                        <div class="card-header" style="text-align:center;">
+                            <label class="card-title" style="font-weight:bolder; font-size:25px;">{{ profile.username }}님의 결과</label>
+                        </div>
+                        <p></p>
+                        <div class="card-content">
+                            <div style="text-align: center;">
+                                <img src="{% static 'img/5hang.png' %}" width=280px>
+                            </div>
+                            <div style="width:100%">
+                                <div style="width:250px;margin: 0 auto;">
+                                    <table width=250px;
+                                           style="border: 1px solid white; border-collapse: collapse;border-right: hidden;border-left: hidden;border-top: hidden;border-bottom: hidden;font-size: 1.5em;">
+                                        <tr style="border: 1px solid;font-weight: bold;">
+                                            <td style="border: 1px solid; text-align: center;">木</td>
+                                            <td style="border: 1px solid; text-align: center;">火</td>
+                                            <td style="border: 1px solid; text-align: center;">土</td>
+                                            <td style="border: 1px solid; text-align: center;">金</td>
+                                            <td style="border: 1px solid; text-align: center;">水</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid; text-align: center;">{{ ohaeng.tree }}</td>
+                                            <td style="border: 1px solid; text-align: center;">{{ ohaeng.fire }}</td>
+                                            <td style="border: 1px solid; text-align: center;">{{ ohaeng.soil }}</td>
+                                            <td style="border: 1px solid; text-align: center;">{{ ohaeng.metal }}</td>
+                                            <td style="border: 1px solid; text-align: center;">{{ ohaeng.water }}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <p>&nbsp</p>
+                            <div>
+                                <div style="width:80%; margin:0 auto; padding:10px;border-radius: 10px; background-color: #f4f3ef;white-space:normal;word-break:break-all;">
+                                    {{ profile.username }}님은 {{ profile.type_EI }}{{ profile.type_SN }}{{ profile.type_TF }}{{ profile.type_JP }}형 입니다. 음향오행과 MBTI를 종합한 결과, {{ profile.username }} 님의 성격은 "{{ description}}" 입니다.
+                                </div>
+                            </div>
+                        </div>
+                    </div>  <!-- end card -->
+                </div> <!-- end col-md-12 -->
+            </div> <!-- end row -->
+        </div>
+    </div>
+{% endblock %}
