@@ -1,0 +1,130 @@
+{% extends 'reccommendAlba/base.html' %}
+{% block content %}
+    {% load staticfiles %}
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="card">
+                        <div class="card-header" style="text-align:center;">
+                            <label class="card-title"
+                                   style="font-weight:bolder; font-size:25px; color:dimgrey">STEP5</label>
+                        </div>
+
+                        <div class="card-content">
+                            <form method="POST" action="{% url 'test_JP' username %}" class="form-horizontal">
+                                {% csrf_token %}
+                                <div>
+                                    <div class="radio">
+                                        <input type="radio" name="Q19" id="Q19_J" value="Q19_J">
+                                        <label for="Q19_J">
+                                            나는 결정에 대해서 잘 변경하지 않는 편이다
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <input type="radio" name="Q19" id="Q19_P" value="Q19_P">
+                                        <label for="Q19_P">
+                                            나는 결정에 대해서 융통성이 있는 편이다.
+                                        </label>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div>
+                                    <div class="radio">
+                                        <input type="radio" name="Q20" id="Q20_J" value="Q20_J">
+                                        <label for="Q20_J">
+                                            나는 계획에 의해서 일 처리를 하는 편이다.
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <input type="radio" name="Q21" id="Q20_P" value="Q20_P">
+                                        <label for="Q20_P">
+                                            나는 일 처리를 마지막에 벼락치기로 하는 편이다.
+                                        </label>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div>
+                                    <div class="radio">
+                                        <input type="radio" name="Q21" id="Q21_J" value="Q21_J">
+                                        <label for="Q21_J">
+                                            나는 계획된 여행이 편하다.
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <input type="radio" name="Q21" id="Q21_P" value="Q21_P">
+                                        <label for="Q21_P">
+                                            나는 갑자기 떠나는 여행이 재미 있다.
+                                        </label>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div>
+                                    <div class="radio">
+                                        <input type="radio" name="Q22" id="Q22_J" value="Q22_J">
+                                        <label for="Q22_J">
+                                            나는 입장이나 결정에 대해 명확하게 언급하는 것을 좋아한다
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <input type="radio" name="Q22" id="Q22_P" value="Q22_P">
+                                        <label for="Q22_P">
+                                            나는 변화의 가능성을 생각하면서 자신의 입장을 임시적인 것으로 간주한다.
+                                        </label>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div>
+                                    <div class="radio">
+                                        <input type="radio" name="Q23" id="Q23_J" value="Q23_J">
+                                        <label for="Q23_J">
+                                            나는 조직적인 분위기에 일이 잘된다.
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <input type="radio" name="Q23" id="Q23_P" value="Q23_P">
+                                        <label for="Q23_P">
+                                            나는 즐거운 분위기에 일이 잘된다.
+                                        </label>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div>
+                                    <div class="radio">
+                                        <input type="radio" name="Q24" id="Q24_J" value="Q24_J">
+                                        <label for="Q24_J">
+                                            내 책상은 정리가 잘 되어 있다.
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <input type="radio" name="Q24" id="Q24_P" value="Q24_P">
+                                        <label for="Q24_P">
+                                            내 책상은 이것저것 벌려져 있다.
+                                        </label>
+                                    </div>
+                                    <input type="hidden" name="username" value={{ username }}>
+                                </div>
+                                <div style="text-align:center">
+                                    <button type="submit" class="btn btn-fill btn-info"
+                                            style="background-color:#66615b; border-color:#66615b; width:130px; margin-top:30px;">
+                                        Submit
+                                    </button>
+                                </div>
+                                <br><br>
+                                <div style="width:100%">
+                                    <div class="progress" style="margin-top:30px; width:50%; margin: 0 auto;">
+                                        <div class="progress-bar progress-bar-info" role="progressbar"
+                                             aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                                             style="width: 100%;">
+                                            <span class="sr-only"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>  <!-- end card -->
+                </div> <!-- end col-md-12 -->
+            </div> <!-- end row -->
+        </div>
+    </div>
+{% endblock %}

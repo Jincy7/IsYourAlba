@@ -1,0 +1,130 @@
+{% extends 'reccommendAlba/base.html' %}
+{% block content %}
+    {% load staticfiles %}
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="card">
+                        <div class="card-header" style="text-align:center;">
+                            <label class="card-title"
+                                   style="font-weight:bolder; font-size:25px; color:dimgrey">시험1</label>
+                        </div>
+
+                        <div class="card-content">
+                            <form method="POST" action="{% url 'test_EI' username %}" class="form-horizontal">
+                                {% csrf_token %}
+                                <div>
+                                    <div class="radio">
+                                        <input type="radio" name="Q1" id="Q1_E" value="Q1_E">
+                                        <label for="Q1_E">
+                                            나는 활동적인 편이다.
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <input type="radio" name="Q1" id="Q1_I" value="Q1_I">
+                                        <label for="Q1_I">
+                                            나는 집에 있는 것이 편하다.
+                                        </label>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div>
+                                    <div class="radio">
+                                        <input type="radio" name="Q2" id="Q2_E" value="Q2_E">
+                                        <label for="Q2_E">
+                                            나는 새로운 사람을 만나면 기분이 좋아진다.
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <input type="radio" name="Q2" id="Q2_I" value="Q2_I">
+                                        <label for="Q2_I">
+                                            나는 모르는 사람을 만나는 일은 피곤하다.
+                                        </label>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div>
+                                    <div class="radio">
+                                        <input type="radio" name="Q3" id="Q3_E" value="Q3_E">
+                                        <label for="Q3_E">
+                                            나는 팀으로 일 하는 것이 편하다.
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <input type="radio" name="Q3" id="Q3_I" value="Q3_I">
+                                        <label for="Q3_I">
+                                            나는 혼자 혹은 다른 사람 한 명 정도와 일 하는 것이 편하다.
+                                        </label>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div>
+                                    <div class="radio">
+                                        <input type="radio" name="Q4" id="Q4_E" value="Q4_E">
+                                        <label for="Q4_E">
+                                            나는 말을 많이 하다 보니 실수 할 때가 종종 있다.
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <input type="radio" name="Q4" id="Q4_I" value="Q4_I">
+                                        <label for="Q4_I">
+                                            나는 말이 없어 주변 사람들이 답답해 할 때가 있다.
+                                        </label>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div>
+                                    <div class="radio">
+                                        <input type="radio" name="Q5" id="Q5_E" value="Q5_E">
+                                        <label for="Q5_E">
+                                            오랜 시간 혼자 일하다 보면 외롭고 지루하고 힘들다.
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <input type="radio" name="Q5" id="Q5_I" value="Q5_I">
+                                        <label for="Q5_I">
+                                            혼자 오랜 시간 일해도 외롭다거나 지루하지 않다.
+                                        </label>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div>
+                                    <div class="radio">
+                                        <input type="radio" name="Q6" id="Q6_E" value="Q6_E">
+                                        <label for="Q6_E">
+                                            일할 때 적막한 것보다는 어느 정도의 소리가 자극이 되기도 한다.
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <input type="radio" name="Q6" id="Q6_I" value="Q6_I">
+                                        <label for="Q6_I">
+                                            나는 시끄러운 환경에서 일을 제대로 할 수 없다.
+                                        </label>
+                                    </div>
+                                    <input type="hidden" name="username" value={{ username }}>
+                                </div>
+                                <div style="text-align:center">
+                                    <button type="submit" class="btn btn-fill btn-info"
+                                            style="background-color:#66615b; border-color:#66615b; width:130px; margin-top:30px;">
+                                        Submit
+                                    </button>
+                                </div>
+                                <br><br>
+                                <div style="width:100%">
+                                    <div class="progress" style="margin-top:30px; width:50%; margin: 0 auto;">
+                                        <div class="progress-bar progress-bar-info" role="progressbar"
+                                             aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                                             style="width: 40%;">
+                                            <span class="sr-only"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>  <!-- end card -->
+                </div> <!-- end col-md-12 -->
+            </div> <!-- end row -->
+        </div>
+    </div>
+{% endblock %}

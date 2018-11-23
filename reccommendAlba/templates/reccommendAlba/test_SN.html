@@ -1,0 +1,124 @@
+{% extends 'reccommendAlba/base.html' %}
+{% block content %}
+    {% load staticfiles %}
+    <div class="content">
+	            <div class="container-fluid">
+	                <div class="row">
+	                    <div class="col-md-8 col-md-offset-2">
+	                        <div class="card">
+	                            <div class="card-header" style="text-align:center;">
+	                                <label class="card-title" style="font-weight:bolder; font-size:25px; color:dimgrey">STEP3</label>
+								</div>
+
+	                            <div class="card-content">
+									<form method="POST" action="{% url 'test_SN' username %}" class="form-horizontal">
+                                        {% csrf_token %}
+										<div>
+											<div class="radio">
+												<input type="radio" name="Q7" id="Q7_S" value="Q7_S">
+												<label for="Q7_S">
+													나는 현실적이다.
+												</label>
+											</div>
+											<div class="radio">
+												<input type="radio" name="Q7" id="Q7_N" value="Q7_N">
+												<label for="Q7_N">
+													나는 미래지향적이다.
+												</label>
+											</div>
+										</div>
+										<hr>
+										<div>
+											<div class="radio">
+												<input type="radio" name="Q8" id="Q8_S" value="Q8_S">
+												<label for="Q8_S">
+													나는 구체적이다.
+												</label>
+											</div>
+											<div class="radio">
+												<input type="radio" name="Q8" id="Q8_N" value="Q8_N">
+												<label for="Q8_N">
+													나는 은유적이다.
+												</label>
+											</div>
+										</div>
+										<hr>
+										<div>
+											<div class="radio">
+												<input type="radio" name="Q9" id="Q9_S" value="Q9_S">
+												<label for="Q9_S">
+													나는 갔던 길로 가는 것이 편하다.
+												</label>
+											</div>
+											<div class="radio">
+												<input type="radio" name="Q9" id="Q9_N" value="Q9_N">
+												<label for="Q9_N">
+													나는 새로운 길이 재미있다
+												</label>
+											</div>
+										</div>
+										<hr>
+										<div>
+											<div class="radio">
+												<input type="radio" name="Q10" id="Q10_S" value="Q10_S">
+												<label for="Q10_S">
+													나는 한 번 간 길도 잘 기억하는 편이다.
+												</label>
+											</div>
+											<div class="radio">
+												<input type="radio" name="Q10" id="Q10_N" value="Q10_N">
+												<label for="Q10_N">
+													나는 한 번 갈 길은 잘 기억하지 못하는 편이다.
+												</label>
+											</div>
+										</div>
+										<hr>
+										<div>
+											<div class="radio">
+												<input type="radio" name="Q11" id="Q11_S" value="Q11_S">
+												<label for="Q11_S">
+													나는 과거의 경험으로 판단한다.
+												</label>
+											</div>
+											<div class="radio">
+												<input type="radio" name="Q11" id="Q11_N" value="Q11_N">
+												<label for="Q11_N">
+													나는 미래의 가능성으로 판단한다.
+												</label>
+											</div>
+										</div>
+										<hr>
+										<div>
+											<div class="radio">
+												<input type="radio" name="Q12" id="Q12_S" value="Q12_S">
+												<label for="Q12_S">
+													나는 침착한 편이다.
+												</label>
+											</div>
+											<div class="radio">
+												<input type="radio" name="Q12" id="Q12_N" value="Q12_N">
+												<label for="Q12_N">
+													나는 비약한다.
+												</label>
+											</div>
+                                            <input type="hidden" name="username" value={{ username }}>
+										</div>
+										<div style="text-align:center">
+											<button type="submit" class="btn btn-fill btn-info" style="background-color:#66615b; border-color:#66615b; width:130px; margin-top:30px;">NEXT</button>
+										</div>
+										<br><br>
+										<div style="width:100%">
+											<div class="progress" style="margin-top:30px; width:50%; margin: 0 auto;">
+												<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+													<span class="sr-only"></span>
+												</div>
+											</div>
+										</div>
+                                    </form>
+	                            </div>
+	                        </div>  <!-- end card -->
+	                    </div> <!-- end col-md-12 -->
+	                </div> <!-- end row -->
+	            </div>
+	    	</div>
+{% endblock %}
