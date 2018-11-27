@@ -2,10 +2,26 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from .models import Profile, OHaeng
+from .models import Profile, OHaeng ,Alba
 from .MBTIdescription import types
 from django.views.decorators.csrf import csrf_protect
-
+import os
+import sys
+import urllib.request
+import json
+import random
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from torch.autograd import Variable
+from torch.utils.data import Dataset, DataLoader
+from torchvision import datasets, transforms
+import numpy as np
+import torch.optim as optim
+import pandas as pd
+from pandas import DataFrame, Series
+import csv
+from random import randrange
 def test(request):
     return render(request, 'reccommendAlba/test.html')
 
@@ -34,8 +50,64 @@ def index(request):
             else:
                 ohaeng = ohaengs[0]
             MBTI_description = types[usertype].__str__()
+            model2 = torch.load('saved_model')
+
+            input_ = [ohaeng.tree, ohaeng.fire, ohaeng.soil, ohaeng.metal, ohaeng.water, profile.num_E, profile.num_I,
+                      profile.num_S,
+                      profile.num_N, profile.num_T, profile.num_F, profile.num_J, profile.num_P]
+            input_ = np.array(input_, dtype=np.float32)
+            input_ = Variable(torch.from_numpy(input_))
+
+            output = model2(input_)
+            output = output.view(-1)
+            list = [i[0] for i in sorted(enumerate(output), key=lambda x: x[1], reverse=True)]
+            pos_list = sorted(output, reverse=True)
+            sum_ = sum(pos_list)
+
+            # 레이블 vocab 만들기
+            file = open('./vocabulary.txt', 'r', encoding='euc-kr')
+            labels = []
+            while True:
+                line = file.readline()
+                line = line[:-1]
+                if not line: break
+                labels.append(line)
+            vocab = set()
+            vocab_label = np.array(labels)
+            vocab.update(vocab_label)
+            label_vocab = {word: i for i, word in enumerate(vocab)}
+
+            # 내림차순한 직업 순서
+            job_list_ = []
+            for num in list:
+                a = [name for name, age in label_vocab.items() if age == num]
+                print(a)
+                job_list_.append(a[0])
+            print(job_list_)
+
+            # 정규화한 확률
+            pos_list_ = []
+            for num in pos_list:
+                pos_list_.append(num / sum_)
+
+#res=Alba.objects.filter(work_type__contains=job_list_[0])#.filter(work_type__contains=job_list_[1]).filter(work_type__contains=job_list_[2])
+# res=Alba.objects.filter(work_type__contains="서빙")
+            num=random.randrange(5)
+            if num==0:
+                res=Alba.objects.filter(work_type__contains="서빙")
+            elif num==1:
+                res=Alba.objects.filter(work_type__contains="매장관리")
+            elif num==2:
+                res=Alba.objects.filter(work_type__contains="마트")
+            elif num==3:
+                res=Alba.objects.filter(work_type__contains="PC방")
+            else:
+                res=Alba.objects.filter(work_type__contains="일반음식점")
+            
+            print(res)
+            companys = x_y(res)
             return render(request, 'reccommendAlba/result.html',
-                          {'profile': profile, 'description': MBTI_description, 'ohaeng': ohaeng})
+                          {'profile': profile, 'description': MBTI_description, 'ohaeng': ohaeng,'companys':companys})
     elif request.method == "GET":
         return render(request, 'reccommendAlba/index.html')
 
@@ -145,10 +217,6 @@ def test_JP(request, username):
         ohaeng = ohaengs[0]
     MBTI_description = types[usertype].__str__()
 
-    """
-    BELOW
-    
-
     model2 = torch.load('saved_model')
 
     input_ = [ohaeng.tree, ohaeng.fire, ohaeng.soil, ohaeng.metal, ohaeng.water, profile.num_E, profile.num_I,
@@ -171,22 +239,69 @@ def test_JP(request, username):
         line = line[:-1]
         if not line: break
         labels.append(line)
+    
     vocab = set()
     vocab_label = np.array(labels)
-    vocab.update()
+    vocab.update(vocab_label)
+   
     label_vocab = {word: i for i, word in enumerate(vocab)}
-
+    print(    label_vocab)
     # 내림차순한 직업 순서
     job_list_ = []
     for num in list:
         a = [name for name, age in label_vocab.items() if age == num]
+        print(a)
         job_list_.append(a[0])
 
     # 정규화한 확률
     pos_list_ = []
     for num in pos_list:
         pos_list_.append(num / sum_)
-        """
+    
+#res=Alba.objects.filter(work_type__contains="서빙")
+#res=Alba.objects.filter(work_type__contains=job_list_[0])#.filter(work_type__contains=job_list_[1]).filter(work_type__contains=job_list_[2])
+    num=random.randrange(5)
+    if num==0:
+        res=Alba.objects.filter(work_type__contains="서빙")
+    elif num==1:
+        res=Alba.objects.filter(work_type__contains="매장관리")
+    elif num==2:
+        res=Alba.objects.filter(work_type__contains="마트")
+    elif num==3:
+        res=Alba.objects.filter(work_type__contains="PC방")
+    else:
+        res=Alba.objects.filter(work_type__contains="일반음식점")
+    print(res)
+    companys=x_y(res)
 
     return render(request, 'reccommendAlba/result.html',
-                  {'profile': profile, 'description': MBTI_description, 'ohaeng': ohaeng})
+                  {'profile': profile, 'description': MBTI_description, 'ohaeng': ohaeng,'companys':companys})
+
+def x_y(resss):
+    client_id = "gaCpVoBwJokeqVr315Jk"
+    client_secret = "z5TX3ETvkP"
+    print("comin")
+    i=0
+    companys=[]
+    for res in resss:
+        i+=1
+        if (i==11):
+            break;
+        encText = urllib.parse.quote(res.address)
+        url = "https://openapi.naver.com/v1/map/geocode?query=" + encText  # json 결과
+        request2 = urllib.request.Request(url)
+        request2.add_header("X-Naver-Client-Id", client_id)
+        request2.add_header("X-Naver-Client-Secret", client_secret)
+        response = urllib.request.urlopen(request2)
+        rescode = response.getcode()
+        if (rescode == 200):
+            response_body = response.read().decode('utf-8')
+            res2=json.loads(response_body)
+
+            companys.append({'cName': res.company_name,'gender':res.gender_preference,'payment':res.payment, 'work_type':res.work_type,"y": res2['result']['items'][0]['point']['y'],
+                              'x': res2['result']['items'][0]['point']['x'],'link':res.url_link})
+
+        else:
+            print("Error Code:" + rescode)
+    print(companys)
+    return companys

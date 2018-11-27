@@ -41,10 +41,115 @@
                                     {{ profile.username }}님은 {{ profile.type_EI }}{{ profile.type_SN }}{{ profile.type_TF }}{{ profile.type_JP }}형 입니다. 음향오행과 MBTI를 종합한 결과, {{ profile.username }} 님의 성격은 "{{ description}}" 입니다.
                                 </div>
                             </div>
+                            <br>
+                            <br>
+                            <div id="map" style="width:100%;height:400px;"></div>
+            <script type="text/javascript">
+            
+            
+                var HOME_PATH = window.HOME_PATH || '.';
+            
+                var MARKER_SPRITE_POSITION = {
+                };
+            
+                {% for com in companys %}
+                   MARKER_SPRITE_POSITION['{{com.cName }}']=[{{ com.y }},{{ com.x }},'{{ com.gender }}','{{ com.payment }}','{{ com.work_type }}','{{ com.link }}']
+                {% endfor %}
+                var map = new naver.maps.Map('map', {
+                    center: new naver.maps.LatLng(37.245891, 127.078485),
+                    zoom: 10
+                });
+            
+                var markers = [],
+                    infoWindows = [];
+            
+                for (var key in MARKER_SPRITE_POSITION) {
+            
+                    var position = new naver.maps.LatLng(
+                        MARKER_SPRITE_POSITION[key][0] ,
+                        MARKER_SPRITE_POSITION[key][1]);
+            
+                    var marker = new naver.maps.Marker({
+                        map: map,
+                        position: position,
+                        title: key,
+                        icon: {
+                            url: HOME_PATH +'/img/example/sp_pins_spot_v3.png',
+                            size: new naver.maps.Size(24, 37),
+                            anchor: new naver.maps.Point(12, 37),
+                            origin: new naver.maps.Point(MARKER_SPRITE_POSITION[key][0], MARKER_SPRITE_POSITION[key][1])
+                        },
+                        zIndex: 100
+                    });
+                    var infoWindow = new naver.maps.InfoWindow({
+                        content: '<div style="width:200px;text-align:center;padding:10px;"><h4><b>"'+ key+'"</b></h4><a href="'+MARKER_SPRITE_POSITION[key][5]+'" target="_blank"><br>성별 : '+MARKER_SPRITE_POSITION[key][2]+'<br>급여 : '+MARKER_SPRITE_POSITION[key][3]+'<br>업직종 : '+MARKER_SPRITE_POSITION[key][4]+'<br><br></div>'
+                    });
+            
+                    markers.push(marker);
+                    infoWindows.push(infoWindow);
+                };
+            
+            
+                naver.maps.Event.addListener(map, 'idle', function() {
+                    updateMarkers(map, markers);
+                });
+            
+                function updateMarkers(map, markers) {
+            
+                    var mapBounds = map.getBounds();
+                    var marker, position;
+            
+                    for (var i = 0; i < markers.length; i++) {
+            
+                        marker = markers[i]
+                        position = marker.getPosition();
+            
+                        if (mapBounds.hasLatLng(position)) {
+                            showMarker(map, marker);
+                        } else {
+                            hideMarker(map, marker);
+                        }
+                    }
+                }
+            
+                function showMarker(map, marker) {
+            
+                    if (marker.setMap()) return;
+                    marker.setMap(map);
+                }
+            
+                function hideMarker(map, marker) {
+            
+                    if (!marker.setMap()) return;
+                    marker.setMap(null);
+                }
+            
+                // 해당 마커의 인덱스를 seq라는 클로저 변수로 저장하는 이벤트 핸들러를 반환합니다.
+                function getClickHandler(seq) {
+                    return function(e) {
+                        var marker = markers[seq],
+                            infoWindow = infoWindows[seq];
+            
+                        if (infoWindow.getMap()) {
+                            infoWindow.close();
+                        } else {
+                            infoWindow.open(map, marker);
+                        }
+                    }
+                }
+            
+                for (var i=0, ii=markers.length; i<ii; i++) {
+                    naver.maps.Event.addListener(markers[i], 'click', getClickHandler(i));
+                }
+            </script>
+                               
+                        
                         </div>
                     </div>  <!-- end card -->
                 </div> <!-- end col-md-12 -->
             </div> <!-- end row -->
         </div>
+            
+      
     </div>
 {% endblock %}
